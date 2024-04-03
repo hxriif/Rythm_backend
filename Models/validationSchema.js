@@ -7,4 +7,17 @@ const userjoiSchema = joi.object({
     password: joi.string().required(),
 });
 
-module.exports = { userjoiSchema };
+const Joi = require('joi');
+
+const musicJoiSchema = Joi.object({
+    name: Joi.string(),
+    image: Joi.string(),
+    category: Joi.string(),
+    description: Joi.string(),
+    artist: Joi.string(),  // lowercase 'artist' to match the Mongoose schema
+    song: Joi.string(),    // lowercase 'song' to match the Mongoose schema
+});
+
+
+
+module.exports = { userjoiSchema, musicJoiSchema };

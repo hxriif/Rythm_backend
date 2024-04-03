@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken")
 const usercollection = require("../Models/userSchema")
+const Musics = require("../Models/musicSchema")
+const { musicJoiSchema } = require("../Models/validationSchema")
 
 
 module.exports = {
@@ -39,8 +41,58 @@ module.exports = {
                 data: allusers
             })
         }
+    },
 
-    }
+
+    getUserbyId: async (req, res) => {
+        const userId = req.params.id;
+        const user = await usercollection.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "not found",
+                message: "user not found"
+            })
+        }
+        else {
+            return res.status(200).json({
+                status: "success",
+                message: "user fetched success",
+                data: user
+            })
+        }
+    },
+
+
+    addMusic: async (req, res) => {
+        const { value, error } = musicJoiSchema.validate(req.body)
+console.log(req.body,'body');
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+        const { name, image, category, description, artist, song } = value
+
+        try {
+            const addedMusic = await Musics.create({
+                name,
+                image,
+                category,
+                description,
+                artist,
+                song,
+            })
+            return res.status(201).json({
+                status: "success",
+                message: "product added successfully",
+                data: addedMusic,
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                status: "error",
+                message: "Internal server error",
+            });
+        }
+    },
 
 
 
