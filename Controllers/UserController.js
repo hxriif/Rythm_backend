@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const { userjoiSchema } = require("../Models/validationSchema")
 const userschema = require("../Models/userSchema")
-const bcrypt=require('bcrypt')
+const bcrypt = require('bcrypt')
 
 
 
@@ -61,7 +61,7 @@ module.exports = {
             }
 
             const id = user.id;
-            
+
 
             if (!password || !user.password) {
                 return res.status(400).json({
@@ -70,7 +70,7 @@ module.exports = {
                 });
             }
 
-            const passwordmatch = await bcrypt.compare(password,user.password);
+            const passwordmatch = await bcrypt.compare(password, user.password);
             if (!passwordmatch) {
                 return res.status(401).json({
                     status: "error",
@@ -100,6 +100,6 @@ module.exports = {
 
     },
 
-    
+
 
 }
