@@ -32,7 +32,7 @@ module.exports = {
             });
             res.status(201).json({
                 status: "success",
-                message: "user registered successfully",
+                message: "user registered successfully✅",
             });
         } catch {
             res.status(500).json({
@@ -88,7 +88,7 @@ module.exports = {
             );
             res.status(200).json({
                 status: "success",
-                message: "Login Successful",
+                message: "Login Successful✅",
                 data: { id, email, Token },
             });
 
@@ -113,7 +113,7 @@ module.exports = {
         }
         return res.status(200).json({
             status: "success",
-            message: "music fetched successfully",
+            message: "music fetched successfully✅",
             data: allsongs
         })
     },
@@ -131,8 +131,26 @@ module.exports = {
         }
         return res.status(200).json({
             status: "success",
-            message: "music fetched successfully",
+            message: "music fetched successfully✅",
             data: music
+        })
+    },
+
+
+
+    musicByCategoryName: async (req, res) => {
+        const musicCategory = req.params.categoryname;
+        const category = await MusicCollections.find({ category: musicCategory })
+        if (!category) {
+            return res.status(404).json({
+                status: "error",
+                message: "not found",
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "music fectched by category✅",
+            data: category
         })
     }
 
