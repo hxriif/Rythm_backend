@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 const { userjoiSchema } = require("../Models/validationSchema")
 const userschema = require("../Models/userSchema")
 const bcrypt = require('bcrypt')
+const MusicCollections = require("../Models/musicSchema")
 
 
 
@@ -99,6 +100,41 @@ module.exports = {
         }
 
     },
+
+
+
+    getAllsongs: async (req, res) => {
+        const allsongs = await MusicCollections.find();
+        if (!allsongs) {
+            return res.status(404).json({
+                status: "error",
+                message: "no music found"
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "music fetched successfully",
+            data: allsongs
+        })
+    },
+
+
+
+    musicById: async (req, res) => {
+        const Id = req.params.id;
+        const music = await MusicCollections.findById(Id)
+        if (!music) {
+            return res.status(404).json({
+                status: "error",
+                message: "music not found"
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "music fetched successfully",
+            data: music
+        })
+    }
 
 
 

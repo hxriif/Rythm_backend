@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const usercollection = require("../Models/userSchema")
-const Musics = require("../Models/musicSchema")
+const MusicsCollection = require("../Models/musicSchema")
 const { musicJoiSchema } = require("../Models/validationSchema")
 
 
@@ -65,14 +65,14 @@ module.exports = {
 
     addMusic: async (req, res) => {
         const { value, error } = musicJoiSchema.validate(req.body)
-console.log(req.body,'body');
+        console.log(req.body, 'body');
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
         const { name, image, category, description, artist, song } = value
 
         try {
-            const addedMusic = await Musics.create({
+            const addedMusic = await MusicsCollection.create({
                 name,
                 image,
                 category,
@@ -93,7 +93,5 @@ console.log(req.body,'body');
             });
         }
     },
-
-
-
+    
 }

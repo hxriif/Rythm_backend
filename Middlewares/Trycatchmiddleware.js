@@ -8,7 +8,6 @@ const TrycatchMiddleware = (TrycatchHandler) => {
                 message: "error",
                 error_message: error.message,
             });
-            // Call next with the error parameter to pass the error to the error handling middleware
             next(error);
         }
     };
