@@ -14,8 +14,8 @@ const musicJoiSchema = Joi.object({
     image: Joi.string(),
     category: Joi.string(),
     description: Joi.string(),
-    artist: Joi.string(),  // lowercase 'artist' to match the Mongoose schema
-    song: Joi.string(),    // lowercase 'song' to match the Mongoose schema
+    artist: Joi.string(), 
+    song: Joi.string(),    
 });
 
 
