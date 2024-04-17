@@ -13,7 +13,7 @@ module.exports = {
             const token = jwt.sign({ email }, process.env.ADMIN_ACCESS_TOKEN_SECRET);
             return res.status(200).json({
                 status: "success",
-                message: "successfully admin registered",
+                message: "successfully admin registered✅",
                 data: token
             })
         }
@@ -37,7 +37,7 @@ module.exports = {
         else {
             return res.status(200).json({
                 status: "success",
-                message: "user's fetched sucessfully",
+                message: "user's fetched sucessfully✅",
                 data: allusers
             })
         }
@@ -56,7 +56,7 @@ module.exports = {
         else {
             return res.status(200).json({
                 status: "success",
-                message: "user fetched success",
+                message: "user fetched success✅",
                 data: user
             })
         }
@@ -70,8 +70,6 @@ module.exports = {
             return res.status(400).json({ error: error.details[0].message });
         }
         const { name, image, category, description, artist, song } = value
-
-        try {
             const addedMusic = await MusicsCollection.create({
                 name,
                 image,
@@ -82,16 +80,9 @@ module.exports = {
             })
             return res.status(201).json({
                 status: "success",
-                message: "product added successfully",
+                message: "product added successfully✅",
                 data: addedMusic,
             });
-
-        } catch (error) {
-            return res.status(500).json({
-                status: "error",
-                message: "Internal server error",
-            });
-        }
     },
     
 }
