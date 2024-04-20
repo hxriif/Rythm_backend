@@ -1,23 +1,23 @@
 const joi = require("joi")
 
 const userjoiSchema = joi.object({
-    name: joi.string(),
+    name: joi.string().required(),
     email: joi.string().email().required(),
     username: joi.string().alphanum().min(3).max(30),
     password: joi.string().required(),
-    image: joi.string(),
+    image: joi.string().required(),
 
 });
 
 const Joi = require('joi');
 
 const musicJoiSchema = Joi.object({
-    name: Joi.string(),
-    image: Joi.string(),
-    category: Joi.string(),
-    description: Joi.string(),
-    artist: Joi.string(), 
-    song: Joi.string(),    
+    name: Joi.string().required(),
+    image: Joi.string().required(),
+    category: Joi.string().required(),
+    description: Joi.string().required(),
+    artist: Joi.string().required(),
+    song: Joi.string().required(),
 });
 
 
