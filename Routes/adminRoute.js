@@ -13,7 +13,7 @@ router.use(verifyToken)
 
 router.get('/allUsers', TrycatchMiddleware(Admincontroller.getallusers))
 router.get('/userById/:id', TrycatchMiddleware(Admincontroller.getUserbyId))
-router.post('/addMusic',imageuploader,TrycatchMiddleware(Admincontroller.addMusic))
+router.post('/addMusic',musicuploader,imageuploader,TrycatchMiddleware(Admincontroller.addMusic))
 router.delete('/deleteMusic/:id',TrycatchMiddleware(Admincontroller.deleteMuisc))
 
 
