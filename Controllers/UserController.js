@@ -17,7 +17,7 @@ module.exports = {
         const { value, error } = userjoiSchema.validate(req.body)
         if (error) {
             return (
-                res.status(400),
+                res.status(400).
                 json({
                     status: "Error",
                     message: "invalid user input data,please enter a valid data",
@@ -33,12 +33,13 @@ module.exports = {
             })
         }
 
-        const { name, email, username, password } = value;
+        const { name, email, username, password,image } = value;
         await userschema.create({
             name,
             email,
-            password,
             username,
+            password,
+            image,
         });
         return res.status(201).json({
             status: "success",

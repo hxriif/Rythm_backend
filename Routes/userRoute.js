@@ -3,9 +3,10 @@ const router = express.Router()
 const userController = require("../Controllers/UserController")
 const TrycatchMiddleware = require("../Middlewares/Trycatchmiddleware")
 const verifyToken=require("../Middlewares/userAuthMiddleware")
+const imageuploader=require("../Middlewares/Image_uploader/Img_uploader")
 
 
-router.post("/Register", TrycatchMiddleware(userController.register))
+router.post("/Register",imageuploader,TrycatchMiddleware(userController.register))
 router.post("/login", TrycatchMiddleware(userController.login))
 
 router.use(verifyToken)

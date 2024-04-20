@@ -5,6 +5,8 @@ const userjoiSchema = joi.object({
     email: joi.string().email().required(),
     username: joi.string().alphanum().min(3).max(30),
     password: joi.string().required(),
+    image: joi.string(),
+
 });
 
 const Joi = require('joi');
