@@ -70,19 +70,36 @@ module.exports = {
             return res.status(400).json({ error: error.details[0].message });
         }
         const { name, image, category, description, artist, song } = value
-            const addedMusic = await MusicsCollection.create({
-                name,
-                image,
-                category,
-                description,
-                artist,
-                song,
-            })
-            return res.status(201).json({
-                status: "success",
-                message: "product added successfully✅",
-                data: addedMusic,
-            });
+        const addedMusic = await MusicsCollection.create({
+            name,
+            image,
+            category,
+            description,
+            artist,
+            song,
+        })
+        return res.status(201).json({
+            status: "success",
+            message: "Music added successfully✅",
+            data: addedMusic,
+        });
     },
-    
+
+
+    deleteMuisc: async (req, res) => {
+        const Id = req.params.id;
+
+        const deletemusic = await MusicsCollection.findOneAndDelete({ _id: Id })
+        if (!deletemusic) {
+            return res.status(404).json({
+                status: "error",
+                message: "Music  Not Found in Database",
+            });
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "music deleted successfully",
+        });
+    },
+
 }
