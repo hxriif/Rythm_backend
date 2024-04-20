@@ -16,7 +16,10 @@ async function main() {
 }       
 
 
-app.use(express.json());          
+app.use(express.json());     
+app.use(express.urlencoded({ extended: true }));
+
+
 app.use("/api/admin", AdminRoute);
 app.use("/api/users",UserRoute)
 
