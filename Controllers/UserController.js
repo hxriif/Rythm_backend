@@ -3,6 +3,8 @@ const { userjoiSchema } = require("../Models/validationSchema")
 const userschema = require("../Models/userSchema")
 const bcrypt = require('bcrypt')
 const MusicCollections = require("../Models/musicSchema")
+const musicSchema = require("../Models/musicSchema")
+const { ObjectId } = require("mongoose").Types;
 
 
 
@@ -144,6 +146,41 @@ module.exports = {
             status: "success",
             message: "music fectched by category✅",
             data: category
+        })
+    },
+
+
+    addToLikedSongs: async (req, res) => {
+        const userId = req.params.id
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
+            })
+        }
+
+        const  {musicId}  = req.body;
+        console.log(musicId,'musiccsss');
+        if (!musicId) {
+            return res.status(404).json({
+                status: "error",
+                message: "music not found in database"
+            })
+        }
+
+        const musicobject = {
+            musicsId: new ObjectId(musicId)
+        };
+
+        await userschema.updateOne(
+            { _id: user.id },
+            { $push: { Likedsongs: musicobject } }
+        );
+
+        return res.status(200).json({
+            status: "success",
+            message: "successfully music added to Liked songs"
         })
     }
 

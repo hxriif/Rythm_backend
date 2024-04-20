@@ -5,7 +5,13 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: String,
     username: String,
-    password: String
+    password: String,
+
+    Likedsongs: [
+        {
+          musicsId: { type: mongoose.Schema.ObjectId, ref: "musics" },
+        },
+      ],
 });
 
 userSchema.pre("save", async function (next) {
