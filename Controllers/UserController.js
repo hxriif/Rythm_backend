@@ -18,10 +18,10 @@ module.exports = {
         if (error) {
             return (
                 res.status(400).
-                json({
-                    status: "Error",
-                    message: "invalid user input data,please enter a valid data",
-                })
+                    json({
+                        status: "Error",
+                        message: "invalid user input data,please enter a valid data",
+                    })
             );
         }
 
@@ -33,7 +33,7 @@ module.exports = {
             })
         }
 
-        const { name, email, username, password,image } = value;
+        const { name, email, username, password, image } = value;
         await userschema.create({
             name,
             email,
@@ -161,13 +161,19 @@ module.exports = {
             })
         }
 
-        const  {musicId}  = req.body;
-        console.log(musicId,'musiccsss');
+        const { musicId } = req.body;
         if (!musicId) {
             return res.status(404).json({
                 status: "error",
                 message: "music not found in database"
             })
+        }
+        const existingSong = user.Likedsongs.find(song => song.musicsId.toString() === musicId);
+        if (existingSong) {
+            return res.status(409).json({
+                status: "error",
+                message: "music already in liked songs"
+            });
         }
 
         const musicobject = {
