@@ -189,7 +189,65 @@ module.exports = {
             status: "success",
             message: "successfully music added to Liked songs"
         })
-    }
+    },
+
+
+    viewLikedSongs: async (req, res) => {
+        const userId = req.params.id;
+        console.log(userId, 'userid');
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
+            })
+        }
+        const userLikedSongs = user.Likedsongs
+        if (userLikedSongs.length === 0) {
+            return res.status(204).json({
+                status: "success",
+                message: "user likedsongs is empty",
+                data: []
+            })
+        }
+        const likedSongs = await userschema.findOne
+            ({ _id: userId }).
+            populate("Likedsongs.musicsId");
+        return res.status(200).json({
+            status: "success",
+            message: "successfully fetched user LikedSongs",
+            data: likedSongs
+        })
+    },
+
+
+    deleteFromLikedSongs: async (req, res) => {
+        const userId = req.params.id;
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
+            })
+        }
+
+        const { musicId } = req.body
+        if (!musicId) {
+            return res.status(404).json({
+                status: "error",
+                message: "music not found"
+            })
+        }
+
+        await userschema.updateOne(
+            { _id: userId },
+            { $pull: { Likedsongs: { musicsId: musicId } } }
+        );
+        return res.status(200).json({
+            status: "success",
+            message: "succesfully music deleted from LikedSongs"
+        })
+    },
 
 
 
