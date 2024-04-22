@@ -151,6 +151,7 @@ module.exports = {
     },
 
 
+
     addToLikedSongs: async (req, res) => {
         const userId = req.params.id
         const user = await userschema.findById(userId)
@@ -192,9 +193,9 @@ module.exports = {
     },
 
 
+
     viewLikedSongs: async (req, res) => {
         const userId = req.params.id;
-        console.log(userId, 'userid');
         const user = await userschema.findById(userId)
         if (!user) {
             return res.status(404).json({
@@ -219,6 +220,7 @@ module.exports = {
             data: likedSongs
         })
     },
+
 
 
     deleteFromLikedSongs: async (req, res) => {

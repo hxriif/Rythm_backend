@@ -5,7 +5,7 @@ const path = require("path");
 
 
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, "uploads"), 
+    destination: path.join(__dirname, "uploadss"), 
     filename: (req, file, cb) => {
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
         const extension = path.extname(file.originalname);
@@ -31,9 +31,10 @@ const musicUploader = (req, res, next) => {
         }
         try {
             const result = await cloudinary.uploader.upload(req.file.path, {
+                resource_type:"video",
                 folder: "rythm_musics",
             });
-            req.body.music = result.secure_url; 
+            req.body.song = result.secure_url; 
 
             fs.unlink(req.file.path, (unlinkErr) => { 
                 if (unlinkErr) {
