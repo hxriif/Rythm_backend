@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt')
 const MusicCollections = require("../Models/musicSchema")
 const musicSchema = require("../Models/musicSchema")
 const { ObjectId } = require("mongoose").Types;
+const Playlist = require("../Models/playlistSchema")
+const { playlistJoiSchema } = require("../Models/validationSchema")
 
 
 
@@ -250,6 +252,73 @@ module.exports = {
             message: "succesfully music deleted from LikedSongs"
         })
     },
+
+
+
+    createPlaylist: async (req, res) => {
+        const userId = req.params.id;
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
+            })
+        }
+
+        const { value, error } = await playlistJoiSchema.validate(req.body);
+        if (error) {
+            return (
+                res.status(400).
+                    json({
+                        status: "Error",
+                        message: "invalid user input data,please enter a valid data",
+                    })
+            );
+        }
+
+        const { name, description } = value;
+        const newPlaylist = new Playlist({
+            name,
+            description,
+        })
+        await newPlaylist.save();
+        return res.status(200).json({
+            status: "success",
+            message: "playlist created successfully",
+            data: newPlaylist
+        })
+    },
+
+
+    addSongToPlaylist: async (req, res) => {
+        const playlistId = req.params.playlistId;
+        const { songId } = req.body;
+
+        const playlist = await Playlist.findById(playlistId);
+        if (!playlist) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Playlist not found'
+            });
+        }
+
+        const song = await MusicCollections.findById(songId);
+        if (!song) {
+            return res.status(404).json({
+                status: "error",
+                message: 'No such music found'
+            });
+        }
+
+
+        await Playlist.updateOne({ _id: playlistId }, { $addToSet: { songs: song } });
+
+        return res.status(200).json({
+            status: "success",
+            message: "Successfully music added to playlist",
+            data: {playlist}
+        });
+    }
 
 
 

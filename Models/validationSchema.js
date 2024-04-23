@@ -21,5 +21,11 @@ const musicJoiSchema = Joi.object({
 });
 
 
+const playlistJoiSchema=joi.object({
+    name:joi.string().required(),
+    description:joi.string().required()
+})
 
-module.exports = { userjoiSchema, musicJoiSchema };
+
+
+module.exports = { userjoiSchema, musicJoiSchema,playlistJoiSchema };

@@ -16,6 +16,8 @@ router.get('/getmusicByCategory/:categoryname',TrycatchMiddleware(userController
 router.post('/addToLikedSongs/:id',TrycatchMiddleware(userController.addToLikedSongs))
 router.get('/viewLikedSongs/:id',TrycatchMiddleware(userController.viewLikedSongs))
 router.delete('/deleteFromLikedSongs/:id',TrycatchMiddleware(userController.deleteFromLikedSongs))
+router.post('/createPlaylist/:id',TrycatchMiddleware(userController.createPlaylist))
+router.post('/addMusicToPlaylist/:playlistId',TrycatchMiddleware(userController.addSongToPlaylist))
 
 
 
