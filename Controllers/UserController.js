@@ -327,7 +327,6 @@ module.exports = {
     viewPlaylistSongs: async (req, res) => {
         const userId = req.params.id;
         const playlists = await Playlist.find({ creator: userId }).populate('songs')
-        console.log(playlists,'hxgfgfx');
         if (!playlists || playlists.length === 0) {
             return res.status(404).json({
                 status: "error",
@@ -335,9 +334,9 @@ module.exports = {
             });
         }
         return res.status(200).json({
-            status:"success",
-            message:"fetched success",
-            data:playlists
+            status: "success",
+            message: "fetched success",
+            data: playlists
         })
 
 
