@@ -265,7 +265,7 @@ module.exports = {
             })
         }
 
-        const { value, error } = await playlistJoiSchema.validate(req.body);
+        const { value, error } = playlistJoiSchema.validate(req.body);
         if (error) {
             return (
                 res.status(400).
@@ -280,8 +280,12 @@ module.exports = {
         const newPlaylist = new Playlist({
             name,
             description,
+            creator:userId,
         })
         await newPlaylist.save();
+
+        await userschema.findByIdAndUpdate(userId, { $addToSet: { createdPlaylists: newPlaylist._id } });
+
         return res.status(200).json({
             status: "success",
             message: "playlist created successfully",
@@ -318,6 +322,33 @@ module.exports = {
             message: "Successfully music added to playlist",
             data: {playlist}
         });
+    },
+
+
+
+    getUserPlaylist:async(req,res)=>{
+        const userId=req.params.id;
+        const user = await userschema.findById(userId)
+        if(!user){
+            return res.status(404).json({
+                status:"error",
+                message:"user not found"
+            })
+        }
+
+        const playlists=await Playlist.find({creator:userId})
+        if(!playlists){
+            return res.status(404).json({
+               status:"error",
+               message:"no playlist found for this user" 
+            })
+        }
+
+        return res.status(200).json({
+            status:"success",
+            message:"palylist fetched successfully",
+            data:playlists
+        })
     }
 
 
