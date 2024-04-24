@@ -8,11 +8,22 @@ const userSchema = new mongoose.Schema({
     password: String,
     image:String,
 
+
+    createdPlaylists: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Playlist"
+  }],
+
     Likedsongs: [
         {
           musicsId: { type: mongoose.Schema.ObjectId, ref: "musics" },
         },
       ],
+
+      createdPlaylists: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Playlist"
+    }],
 });
 
 
