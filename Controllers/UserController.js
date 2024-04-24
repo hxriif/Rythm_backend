@@ -280,7 +280,7 @@ module.exports = {
         const newPlaylist = new Playlist({
             name,
             description,
-            creator:userId,
+            creator: userId,
         })
         await newPlaylist.save();
 
@@ -320,37 +320,52 @@ module.exports = {
         return res.status(200).json({
             status: "success",
             message: "Successfully music added to playlist",
-            data: {playlist}
+            data: { playlist }
         });
     },
 
-
-
-    getUserPlaylist:async(req,res)=>{
-        const userId=req.params.id;
-        const user = await userschema.findById(userId)
-        if(!user){
+    viewPlaylistSongs: async (req, res) => {
+        const userId = req.params.id;
+        const playlists = await Playlist.find({ creator: userId }).populate('songs')
+        console.log(playlists,'hxgfgfx');
+        if (!playlists || playlists.length === 0) {
             return res.status(404).json({
-                status:"error",
-                message:"user not found"
+                status: "error",
+                message: "No playlists found for this user"
+            });
+        }
+        return res.status(200).json({
+            status:"success",
+            message:"fetched success",
+            data:playlists
+        })
+
+
+    },
+
+    getUserPlaylist: async (req, res) => {
+        const userId = req.params.id;
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
             })
         }
 
-        const playlists=await Playlist.find({creator:userId})
-        if(!playlists){
+        const playlists = await Playlist.find({ creator: userId })
+        if (!playlists) {
             return res.status(404).json({
-               status:"error",
-               message:"no playlist found for this user" 
+                status: "error",
+                message: "no playlist found for this user"
             })
         }
 
         return res.status(200).json({
-            status:"success",
-            message:"palylist fetched successfully",
-            data:playlists
+            status: "success",
+            message: "palylist fetched successfully",
+            data: playlists
         })
     }
-
-
 
 }
