@@ -3,7 +3,6 @@ const { userjoiSchema } = require("../Models/validationSchema")
 const userschema = require("../Models/userSchema")
 const bcrypt = require('bcrypt')
 const MusicCollections = require("../Models/musicSchema")
-const musicSchema = require("../Models/musicSchema")
 const { ObjectId } = require("mongoose").Types;
 const Playlist = require("../Models/playlistSchema")
 const { playlistJoiSchema } = require("../Models/validationSchema")
@@ -89,7 +88,7 @@ module.exports = {
             { email: user.email },
             process.env.USER_ACCES_TOKEN_SECRET,
             {
-                expiresIn: 8500,
+                expiresIn: 86400,
             }
         );
         return res.status(200).json({
@@ -415,6 +414,7 @@ module.exports = {
             data: playlists
         })
     },
+
 
 
     deletePlaylistSongs: async (req, res) => {
