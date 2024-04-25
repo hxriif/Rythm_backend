@@ -101,6 +101,7 @@ module.exports = {
 
 
 
+
     getAllsongs: async (req, res) => {
         const allsongs = await MusicCollections.find();
         if (!allsongs) {
@@ -115,6 +116,7 @@ module.exports = {
             data: allsongs
         })
     },
+
 
 
 
@@ -136,6 +138,7 @@ module.exports = {
 
 
 
+
     musicByCategoryName: async (req, res) => {
         const musicCategory = req.params.categoryname;
         const category = await MusicCollections.find({ category: musicCategory })
@@ -151,6 +154,7 @@ module.exports = {
             data: category
         })
     },
+
 
 
 
@@ -196,6 +200,7 @@ module.exports = {
 
 
 
+
     viewLikedSongs: async (req, res) => {
         const userId = req.params.id;
         const user = await userschema.findById(userId)
@@ -222,6 +227,7 @@ module.exports = {
             data: likedSongs
         })
     },
+
 
 
 
@@ -294,6 +300,74 @@ module.exports = {
     },
 
 
+    deletePlaylist: async (req, res) => {
+        const userId = req.params.id;
+        const { playlistId } = req.body;
+
+        const user = await userschema.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "User not found"
+            });
+        }
+
+        const updatedUser = await userschema.findByIdAndUpdate(
+            userId,
+            { $pull: { createdPlaylists: playlistId } },
+        );
+        if (!updatedUser) {
+            return res.status(404).json({
+                status: "error",
+                message: "Playlist not found in user's created playlists"
+            });
+        }
+
+        const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
+        if (!deletedPlaylist) {
+            return res.status(404).json({
+                status: "error",
+                message: "Playlist not found"
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Playlist deleted successfully",
+            deletedPlaylist: deletedPlaylist
+        });
+    },
+
+
+
+    getUserPlaylist: async (req, res) => {
+        const userId = req.params.id;
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
+            })
+        }
+
+        const playlists = await Playlist.find({ creator: userId })
+        if (!playlists) {
+            return res.status(404).json({
+                status: "error",
+                message: "no playlist found for this user"
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "palylist fetched successfully",
+            data: playlists
+        })
+    },
+
+
+
+
     addSongToPlaylist: async (req, res) => {
         const playlistId = req.params.playlistId;
         const { songId } = req.body;
@@ -324,6 +398,8 @@ module.exports = {
         });
     },
 
+
+
     viewPlaylistSongs: async (req, res) => {
         const userId = req.params.id;
         const playlists = await Playlist.find({ creator: userId }).populate('songs')
@@ -338,33 +414,35 @@ module.exports = {
             message: "fetched success",
             data: playlists
         })
-
-
     },
 
-    getUserPlaylist: async (req, res) => {
+
+    deletePlaylistSongs: async (req, res) => {
         const userId = req.params.id;
-        const user = await userschema.findById(userId)
+        const user = await userschema.findById(userId);
         if (!user) {
-            return res.status(404).json({
+            res.status(404).json({
                 status: "error",
-                message: "user not found"
+                message: 'user not found'
             })
         }
 
-        const playlists = await Playlist.find({ creator: userId })
-        if (!playlists) {
+        const { musicId } = req.body;
+        const music = await Playlist.findOneAndUpdate({ creator: userId }, { $pull: { songs: musicId } })
+        if (!music) {
             return res.status(404).json({
                 status: "error",
-                message: "no playlist found for this user"
+                message: "music not found "
             })
         }
-
         return res.status(200).json({
             status: "success",
-            message: "palylist fetched successfully",
-            data: playlists
+            message: "successfully music deleted from playlist"
         })
     }
 
 }
+
+
+
+
