@@ -47,7 +47,7 @@ module.exports = {
             message: "user registered successfully✅",
         });
     },
-
+    
 
 
 
@@ -97,7 +97,6 @@ module.exports = {
             data: { id, email, Token },
         });
     },
-
 
 
 
@@ -298,7 +297,7 @@ module.exports = {
         })
     },
 
-    
+
 
     deletePlaylist: async (req, res) => {
         const userId = req.params.id;
