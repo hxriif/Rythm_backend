@@ -3,6 +3,7 @@ const usercollection = require("../Models/userSchema")
 const MusicsCollection = require("../Models/musicSchema")
 const {musicJoiSchema}=require("../Models/validationSchema")
 const musicSchema = require("../Models/musicSchema")
+const userSchema = require("../Models/userSchema")
 
 module.exports = {
 
@@ -116,6 +117,21 @@ module.exports = {
             message:"successfully music fetched ",
             data:musics
         })
-    }
+    },
+
+
+
+    enableUserStatus:async(req,res)=>{
+     const userId=req.params.id;
+     const user=await userSchema.findById(userId)
+     if(!user){
+        return res.status(404).json({
+            status:"error",
+            message:"user not found"
+        })
+     }
+
+     await userSchema.updateOne({_id:userId},{$set:{status:"enabled"}})
+    },
 
 }
