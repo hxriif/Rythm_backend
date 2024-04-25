@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 const usercollection = require("../Models/userSchema")
 const MusicsCollection = require("../Models/musicSchema")
 const {musicJoiSchema}=require("../Models/validationSchema")
+const musicSchema = require("../Models/musicSchema")
 
 module.exports = {
 
@@ -99,5 +100,22 @@ module.exports = {
             message: "music deleted successfully",
         });
     },
+
+
+    getAllMusics:async(req,res)=>{
+       const musics =await MusicsCollection.find()
+        if(!musics||musics.length===0){
+            return res.status(404).json({
+              status:"error",
+              message:"no music find in music collection"
+            })
+        }
+
+        return res.status(200).json({
+            status:"success",
+            message:"successfully music fetched ",
+            data:musics
+        })
+    }
 
 }
