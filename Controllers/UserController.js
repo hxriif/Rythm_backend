@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken")
-const { userjoiSchema } = require("../Models/validationSchema")
+const { userjoiSchema, musicJoiSchema } = require("../Models/validationSchema")
 const userschema = require("../Models/userSchema")
 const bcrypt = require('bcrypt')
 const MusicCollections = require("../Models/musicSchema")
 const { ObjectId } = require("mongoose").Types;
 const Playlist = require("../Models/playlistSchema")
 const { playlistJoiSchema } = require("../Models/validationSchema")
+const  musicRequest=require("../Models/MusicUploadRequest")
 
 
 
@@ -439,6 +440,39 @@ module.exports = {
             status: "success",
             message: "successfully music deleted from playlist"
         })
+    },
+
+
+    musicUploadrequest:async(req,res)=>{
+        const userId=req.params.id;
+        const user=await userschema.findById(userId)
+        console.log(user,'usss');
+        if(!user){
+            return res.status(404).json({
+                status:"error",
+                message:"user not found"
+            })
+        }
+        const {value,error}= musicJoiSchema.validate (req.body);
+        if(error){
+            return res.status(400).json({ error: error.details[0].message })
+        }
+        const {name,image,category,description,artist,song}=value
+          const requestedMusic=await musicRequest.create({
+            name,
+            image,
+            category,
+            description,
+            artist,
+            song,
+          })
+
+          return res.status(200).json({
+            status:"success",
+            message:"successfully music added to pending request",
+            data:requestedMusic
+          })
+
     }
 
 }
