@@ -11,7 +11,7 @@ const musicUploadRequestSchema = new mongoose.Schema({
     song: String,
 
 
-    user: {
+    creator: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
