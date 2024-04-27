@@ -6,7 +6,8 @@ const MusicCollections = require("../Models/musicSchema")
 const { ObjectId } = require("mongoose").Types;
 const Playlist = require("../Models/playlistSchema")
 const { playlistJoiSchema } = require("../Models/validationSchema")
-const  musicRequest=require("../Models/MusicUploadRequest")
+const musicRequest = require("../Models/MusicUploadRequest")
+const userMusicCollection = require("../Models/userUploadingMusic")
 
 
 
@@ -48,7 +49,7 @@ module.exports = {
             message: "user registered successfully✅",
         });
     },
-    
+
 
 
 
@@ -443,36 +444,62 @@ module.exports = {
     },
 
 
-    musicUploadrequest:async(req,res)=>{
-        const userId=req.params.id;
-        const user=await userschema.findById(userId)
-        console.log(user,'usss');
-        if(!user){
+    musicUploadrequest: async (req, res) => {
+        const userId = req.params.id;
+        const user = await userschema.findById(userId)
+        console.log(user, 'usss');
+        if (!user) {
             return res.status(404).json({
-                status:"error",
-                message:"user not found"
+                status: "error",
+                message: "user not found"
             })
         }
-        const {value,error}= musicJoiSchema.validate (req.body);
-        if(error){
+        const { value, error } = musicJoiSchema.validate(req.body);
+        if (error) {
             return res.status(400).json({ error: error.details[0].message })
         }
-        const {name,image,category,description,artist,song}=value
-          const requestedMusic=await musicRequest.create({
+        const { name, image, category, description, artist, song } = value
+        const requestedMusic = await musicRequest.create({
             name,
             image,
             category,
             description,
             artist,
             song,
-          })
+            creator: userId,
+        })
 
-          return res.status(200).json({
-            status:"success",
-            message:"successfully music added to pending request",
-            data:requestedMusic
-          })
+        return res.status(200).json({
+            status: "success",
+            message: "successfully music added to pending request",
+            data: requestedMusic
+        })
 
+    },
+
+    deleteUploadedMusic: async (req, res) => {
+        const userId = req.params.id;
+        const user = await userschema.findById(userId)
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "user not found"
+            })
+        }
+
+        const { musicId } = req.body;
+        const deletedMusic = await userMusicCollection.findOneAndDelete({ _id: musicId }, { creator: userId })
+        if (!deletedMusic) {
+            return res.status(404).json({
+                status: "error",
+                message: "no such music "
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "successfully music deleted form user collection",
+            data: deletedMusic
+        })
     }
 
 }
