@@ -22,12 +22,6 @@ const musicUploadRequestSchema = new mongoose.Schema({
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending'
     },
-
-
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
 })
 
 

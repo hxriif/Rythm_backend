@@ -502,15 +502,18 @@ module.exports = {
         if (!deletedMusic) {
             return res.status(404).json({
                 status: "error",
-                message: "no such music "
+                message: "no such music find in user collection"
             })
         }
         return res.status(200).json({
             status: "success",
-            message: "successfully music deleted fr0m  collection",
+            message: "successfully music deleted from  collection",
             data: deletedMusic
         })
-    }
+    },
+
+
+    
 
 }
 

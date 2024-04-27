@@ -13,6 +13,11 @@ const userMusicsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
+
+    uploadedAt: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 
