@@ -458,6 +458,14 @@ module.exports = {
         if (error) {
             return res.status(400).json({ error: error.details[0].message })
         }
+
+        const existingname= await userMusicCollection.findOne({name:value.name})
+        if(existingname){
+            return res.status(409).json({
+                status:"error",
+                message:"music name already exists"
+            })
+        }
         const { name, image, category, description, artist, song } = value
         const requestedMusic = await musicRequest.create({
             name,
@@ -476,6 +484,8 @@ module.exports = {
         })
 
     },
+
+
 
     deleteUploadedMusic: async (req, res) => {
         const userId = req.params.id;
@@ -497,7 +507,7 @@ module.exports = {
         }
         return res.status(200).json({
             status: "success",
-            message: "successfully music deleted form user collection",
+            message: "successfully music deleted fr0m  collection",
             data: deletedMusic
         })
     }

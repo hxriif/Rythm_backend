@@ -189,8 +189,6 @@ module.exports = {
 
         request.status = 'rejected';
         await request.save();
-
-        await MusicUploadRequest.findByIdAndDelete(requestId)
         res.json({ message: 'uploading request rejected' });
     }
 
