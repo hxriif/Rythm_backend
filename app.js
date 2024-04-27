@@ -5,7 +5,6 @@ const port = 3003;
 const mongoose = require("mongoose")
 const AdminRoute=require("./Routes/adminRoute")
 const UserRoute=require("./Routes/userRoute");
-const bodyParser = require("body-parser");
           
 
 const mongoDB = "mongodb://localhost:27017/Fullstack-music-app";
