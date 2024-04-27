@@ -4,6 +4,8 @@ const MusicsCollection = require("../Models/musicSchema")
 const { musicJoiSchema } = require("../Models/validationSchema")
 const MusicUploadRequest = require("../Models/MusicUploadRequest")
 const userMusics = require("../Models/userUploadingMusic")
+const musicUploader = require("../Middlewares/Music_uploader/Music_uploader")
+const { musicUploadrequest } = require("./UserController")
 
 module.exports = {
 
@@ -127,7 +129,7 @@ module.exports = {
 
 
     pendingMusicRequest: async (req, res) => {
-        const pendingRequest = await MusicUploadRequest.find({ status: "pending" })
+        const pendingRequest = await MusicUploadRequest.find({ status: "pending" }).populate('creator')
         if (pendingRequest.length === 0) {
             return res.status(404).json({
                 status: "error",
@@ -146,14 +148,20 @@ module.exports = {
 
     approvePendigRequest: async (req, res) => {
         const requestId = req.params.id;
-        const request = await MusicUploadRequest.findById(requestId)
+        const request = await MusicUploadRequest.findById(requestId).populate('creator')
         if (!request) {
             return res.status(404).json({
                 status: "error",
                 message: "request not found"
             })
         }
-        request.status = 'approved'
+
+        request.status = 'approved';
+        await request.save();
+               
+
+        await MusicUploadRequest.findByIdAndDelete(requestId);
+
         const approvedMusic = await userMusics.create({
             name: request.name,
             image: request.image,
@@ -161,7 +169,10 @@ module.exports = {
             description: request.description,
             artist: request.artist,
             song: request.song,
+            creator:request.creator.id,
         })
+
+
 
         return res.status(200).json({
             status: "success",
