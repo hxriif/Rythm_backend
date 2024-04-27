@@ -4,8 +4,6 @@ const MusicsCollection = require("../Models/musicSchema")
 const { musicJoiSchema } = require("../Models/validationSchema")
 const MusicUploadRequest = require("../Models/MusicUploadRequest")
 const userMusics = require("../Models/userUploadingMusic")
-const musicUploader = require("../Middlewares/Music_uploader/Music_uploader")
-const { musicUploadrequest } = require("./UserController")
 
 module.exports = {
 
@@ -160,7 +158,6 @@ module.exports = {
         await request.save();
                
 
-        await MusicUploadRequest.findByIdAndDelete(requestId);
 
         const approvedMusic = await userMusics.create({
             name: request.name,
@@ -194,7 +191,7 @@ module.exports = {
         await request.save();
 
         await MusicUploadRequest.findByIdAndDelete(requestId)
-        res.json({ message: 'Request rejected successfully' });
+        res.json({ message: 'uploading request rejected' });
     }
 
 }
