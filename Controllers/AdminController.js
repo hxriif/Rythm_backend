@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken")
 const usercollection = require("../Models/userSchema")
 const MusicsCollection = require("../Models/musicSchema")
-const {musicJoiSchema}=require("../Models/validationSchema")
-const musicSchema = require("../Models/musicSchema")
-const userSchema = require("../Models/userSchema")
+const { musicJoiSchema } = require("../Models/validationSchema")
+const MusicUploadRequest = require("../Models/MusicUploadRequest")
+const userMusics = require("../Models/userUploadingMusic")
 
 module.exports = {
 
@@ -86,6 +86,7 @@ module.exports = {
     },
 
 
+
     deleteMuisc: async (req, res) => {
         const Id = req.params.id;
 
@@ -103,35 +104,86 @@ module.exports = {
     },
 
 
-    getAllMusics:async(req,res)=>{
-       const musics =await MusicsCollection.find()
-        if(!musics||musics.length===0){
+
+    getAllMusics: async (req, res) => {
+        const musics = await MusicsCollection.find()
+        if (!musics || musics.length === 0) {
             return res.status(404).json({
-              status:"error",
-              message:"no music find in music collection"
+                status: "error",
+                message: "no music find in music collection"
             })
         }
 
         return res.status(200).json({
-            status:"success",
-            message:"successfully music fetched ",
-            data:musics
+            status: "success",
+            message: "successfully music fetched ",
+            data: musics
         })
     },
 
 
 
-    enableUserStatus:async(req,res)=>{
-     const userId=req.params.id;
-     const user=await userSchema.findById(userId)
-     if(!user){
-        return res.status(404).json({
-            status:"error",
-            message:"user not found"
-        })
-     }
 
-     await userSchema.updateOne({_id:userId},{$set:{status:"enabled"}})
+
+
+    pendingMusicRequest: async (req, res) => {
+        const pendingRequest = await MusicUploadRequest.find({ status: "pending" })
+        if (pendingRequest.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "no pending request found"
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "succeessfully fetched pending requests",
+            data: pendingRequest
+        })
     },
+
+
+
+    approvePendigRequest: async (req, res) => {
+        const requestId = req.params.id;
+        const request = await MusicUploadRequest.findById(requestId)
+        if (!request) {
+            return res.status(404).json({
+                status: "error",
+                message: "request not found"
+            })
+        }
+        request.status = 'approved'
+        const approvedMusic = await userMusics.create({
+            name: request.name,
+            image: request.image,
+            category: request.category,
+            description: request.description,
+            artist: request.artist,
+            song: request.song,
+        })
+
+        return res.status(200).json({
+            status: "success",
+            message: "song request approved",
+            data: approvedMusic
+        })
+    },
+
+
+
+    rejectPendingRequest:async(req,res)=>{
+        const requestId=req.params.id
+        const request=await MusicUploadRequest.findById(requestId)
+        if (!request) {
+            return res.status(404).json({ message: 'Request not found' });
+        }
+
+        request.status = 'rejected';
+        await request.save();
+
+        await MusicUploadRequest.findByIdAndDelete(requestId)
+        res.json({ message: 'Request rejected successfully' });
+    }
 
 }
