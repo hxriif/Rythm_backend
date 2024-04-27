@@ -16,7 +16,10 @@ router.get('/userById/:id', TrycatchMiddleware(Admincontroller.getUserbyId))
 router.post('/addMusic',imageuploader,TrycatchMiddleware(Admincontroller.addMusic))
 router.delete('/deleteMusic/:id',TrycatchMiddleware(Admincontroller.deleteMuisc))
 router.get('/getAllMusics',TrycatchMiddleware(Admincontroller.getAllMusics))
-router.put('/updateUserStatus/:id',TrycatchMiddleware(Admincontroller.enableUserStatus))
+router.get('/pending',TrycatchMiddleware(Admincontroller.pendingMusicRequest))
+router.post('/approve/:id',TrycatchMiddleware(Admincontroller.approvePendigRequest))
+router.delete('/reject/:id',TrycatchMiddleware(Admincontroller.rejectPendingRequest))
+
 
 
 
