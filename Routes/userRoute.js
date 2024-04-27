@@ -27,7 +27,7 @@ router.get('/getUserPlaylists/:id', TrycatchMiddleware(userController.getUserPla
 router.post('/addMusicToPlaylist/:playlistId', TrycatchMiddleware(userController.addSongToPlaylist))
 router.delete('/deletePlaylisSong/:id', TrycatchMiddleware(userController.deletePlaylistSongs))
 router.get('/playlistSongs/:id', TrycatchMiddleware(userController.viewPlaylistSongs))
-
+router.post('/musicRequest/:id',imageuploader,TrycatchMiddleware(userController.musicUploadrequest))
 
 
 module.exports = router;
