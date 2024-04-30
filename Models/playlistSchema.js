@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const playlistSchema = new mongoose.Schema({
     name: String,
     description: String,
+    image:String,
 
     creator: {
         type: mongoose.Schema.Types.ObjectId,
