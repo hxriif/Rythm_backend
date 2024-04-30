@@ -4,6 +4,7 @@ const MusicsCollection = require("../Models/musicSchema")
 const { musicJoiSchema } = require("../Models/validationSchema")
 const MusicUploadRequest = require("../Models/MusicUploadRequest")
 const userMusics = require("../Models/userUploadingMusic")
+const { musicUploadrequest } = require("./UserController")
 
 module.exports = {
 
@@ -157,7 +158,7 @@ module.exports = {
         request.status = 'approved';
         await request.save();
                
-
+          
 
         const approvedMusic = await userMusics.create({
             name: request.name,
@@ -169,7 +170,7 @@ module.exports = {
             creator:request.creator.id,
         })
 
-
+        await MusicUploadRequest.deleteMany({ status: 'approved' });
 
         return res.status(200).json({
             status: "success",
