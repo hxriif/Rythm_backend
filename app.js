@@ -5,6 +5,7 @@ const port = 3003;
 const mongoose = require("mongoose")
 const AdminRoute=require("./Routes/adminRoute")
 const UserRoute=require("./Routes/userRoute");
+const cors=require('cors')
           
 
 const mongoDB = "mongodb://localhost:27017/Fullstack-music-app";
@@ -15,7 +16,7 @@ async function main() {
   console.log("mongoDB connected");
 }       
 
-
+app.use(cors())
 app.use(express.json());     
 app.use(express.urlencoded({ extended: true }));
 
