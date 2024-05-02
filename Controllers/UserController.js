@@ -18,6 +18,7 @@ module.exports = {
 
     register: async (req, res) => {
         const { value, error } = userjoiSchema.validate(req.body)
+        console.log(req.body,'body');
         if (error) {
             return (
                 res.status(400).
@@ -149,7 +150,7 @@ module.exports = {
             })
         }
         return res.status(200).json({
-            status: "success",
+            status: "success",  
             message: "music fectched by category✅",
             data: category
         })
