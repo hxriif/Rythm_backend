@@ -18,7 +18,6 @@ module.exports = {
 
     register: async (req, res) => {
         const { value, error } = userjoiSchema.validate(req.body)
-        console.log(req.body,'body');
         if (error) {
             return (
                 res.status(400).
@@ -56,6 +55,7 @@ module.exports = {
 
     login: async (req, res) => {
         const { value, error } = userjoiSchema.validate(req.body);
+        console.log(req.body,'body');
         if (error) {
             return res.json(error.message);
         }
@@ -133,7 +133,7 @@ module.exports = {
         return res.status(200).json({
             status: "success",
             message: "music fetched successfully✅",
-            data: music
+            data: [music]
         })
     },
 
