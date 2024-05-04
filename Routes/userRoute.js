@@ -10,6 +10,11 @@ router.post("/Register", imageuploader, TrycatchMiddleware(userController.regist
 router.post("/login", TrycatchMiddleware(userController.login))
 
 router.use(verifyToken)
+
+
+// get user details
+router.get('/getDetails/:id',TrycatchMiddleware(userController.getDetails))
+
 // fetching music
 router.get('/getallMusics', TrycatchMiddleware(userController.getAllsongs))
 router.get('/getmusicByid/:id', TrycatchMiddleware(userController.musicById))
