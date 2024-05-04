@@ -103,6 +103,26 @@ module.exports = {
 
 
 
+
+    getDetails:async(req,res)=>{
+        const userId=req.params.id;
+        const user=await userschema.findById(userId);
+        if(!user){
+            return res.status(404).json({
+                status:"error",
+                message:"user nof found"
+            })
+        }
+        return res.status(200).json({
+            status:"success",
+            message:"successfully fetched your details",
+            data:[user]
+        })
+
+    },
+
+
+
     getAllsongs: async (req, res) => {
         const allsongs = await MusicCollections.find();
         if (!allsongs) {
@@ -246,6 +266,7 @@ module.exports = {
         }
 
         const { musicId } = req.body
+        console.log(musicId,'muss');
         if (!musicId) {
             return res.status(404).json({
                 status: "error",
