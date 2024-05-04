@@ -213,7 +213,7 @@ module.exports = {
         }
         const userLikedSongs = user.Likedsongs
         if (userLikedSongs.length === 0) {
-            return res.status(204).json({
+            return res.status(204).json({   
                 status: "success",
                 message: "user likedsongs is empty",
                 data: []
@@ -222,10 +222,13 @@ module.exports = {
         const likedSongs = await userschema.findOne
             ({ _id: userId }).
             populate("Likedsongs.musicsId");
+
+            const userLikedSongsData = likedSongs.Likedsongs;
+
         return res.status(200).json({
             status: "success",
             message: "successfully fetched user LikedSongs",
-            data: likedSongs
+            data: userLikedSongsData
         })
     },
 
