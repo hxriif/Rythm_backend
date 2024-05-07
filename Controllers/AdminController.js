@@ -3,8 +3,7 @@ const usercollection = require("../Models/userSchema")
 const MusicsCollection = require("../Models/musicSchema")
 const { musicJoiSchema } = require("../Models/validationSchema")
 const MusicUploadRequest = require("../Models/MusicUploadRequest")
-const userMusics = require("../Models/userUploadingMusic")
-const { musicUploadrequest } = require("./UserController")
+const userMusicCollection=require("../Models/userUploadingMusic")
 
 module.exports = {
 
@@ -160,7 +159,7 @@ module.exports = {
                
           
 
-        const approvedMusic = await userMusics.create({
+        const approvedMusic = await userMusicCollection.create({
             name: request.name,
             image: request.image,
             category: request.category,
