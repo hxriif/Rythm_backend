@@ -24,7 +24,7 @@ const musicJoiSchema = Joi.object({
 const playlistJoiSchema=joi.object({
     name:joi.string().required(),
     description:joi.string().required(),
-    image:Joi.string().required()
+    image:joi.string().required()
 })
 
 
