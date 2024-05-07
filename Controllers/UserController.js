@@ -8,7 +8,7 @@ const Playlist = require("../Models/playlistSchema")
 const { playlistJoiSchema } = require("../Models/validationSchema")
 const musicRequest = require("../Models/MusicUploadRequest")
 const userMusicCollection = require("../Models/userUploadingMusic")
-
+const userMusicsSchema=require("../Models/userUploadingMusic")
 
 
 
@@ -55,7 +55,6 @@ module.exports = {
 
     login: async (req, res) => {
         const { value, error } = userjoiSchema.validate(req.body);
-        console.log(req.body,'body');
         if (error) {
             return res.json(error.message);
         }
@@ -266,7 +265,6 @@ module.exports = {
         }
 
         const { musicId } = req.body
-        console.log(musicId,'muss');
         if (!musicId) {
             return res.status(404).json({
                 status: "error",
@@ -471,20 +469,21 @@ module.exports = {
 
     musicUploadrequest: async (req, res) => {
         const userId = req.params.id;
+        console.log(userId,'user');
         const user = await userschema.findById(userId)
-        console.log(user, 'usss');
         if (!user) {
             return res.status(404).json({
                 status: "error",
                 message: "user not found"
             })
         }
-        const { value, error } = musicJoiSchema.validate(req.body);
+        const { value, error } =musicJoiSchema.validate(req.body)
+        console.log(error,'err');
         if (error) {
             return res.status(400).json({ error: error.details[0].message })
         }
 
-        const existingname= await userMusicCollection.findOne({name:value.name})
+        const existingname= await MusicCollections.findOne({name:value.name})
         if(existingname){
             return res.status(409).json({
                 status:"error",
@@ -492,7 +491,7 @@ module.exports = {
             })
         }
         const { name, image, category, description, artist, song } = value
-        const requestedMusic = await musicRequest.create({
+        const requestedMusic = await userMusicsSchema.create({
             name,
             image,
             category,
@@ -501,7 +500,6 @@ module.exports = {
             song,
             creator: userId,
         })
-
         return res.status(200).json({
             status: "success",
             message: "successfully music added to pending request",
