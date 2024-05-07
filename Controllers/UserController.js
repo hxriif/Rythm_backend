@@ -224,6 +224,7 @@ module.exports = {
     viewLikedSongs: async (req, res) => {
         const userId = req.params.id;
         const user = await userschema.findById(userId)
+        console.log(user,'user');
         if (!user) {
             return res.status(404).json({
                 status: "error",
@@ -469,8 +470,8 @@ module.exports = {
 
     musicUploadrequest: async (req, res) => {
         const userId = req.params.id;
-        console.log(userId,'user');
         const user = await userschema.findById(userId)
+        console.log(user,'user');
         if (!user) {
             return res.status(404).json({
                 status: "error",
@@ -478,7 +479,6 @@ module.exports = {
             })
         }
         const { value, error } =musicJoiSchema.validate(req.body)
-        console.log(error,'err');
         if (error) {
             return res.status(400).json({ error: error.details[0].message })
         }
@@ -491,7 +491,7 @@ module.exports = {
             })
         }
         const { name, image, category, description, artist, song } = value
-        const requestedMusic = await userMusicsSchema.create({
+        const requestedMusic = await musicRequest.create({
             name,
             image,
             category,
