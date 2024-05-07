@@ -9,7 +9,7 @@ const musicuploader=require("../Middlewares/Music_uploader/Music_uploader")
 
 router.post('/login', TrycatchMiddleware(Admincontroller.login));
 
-router.use(verifyToken)
+router.use(verifyToken)  
 
 router.get('/allUsers', TrycatchMiddleware(Admincontroller.getallusers))
 router.get('/userById/:id', TrycatchMiddleware(Admincontroller.getUserbyId))
