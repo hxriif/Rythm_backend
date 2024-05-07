@@ -9,21 +9,22 @@ const userjoiSchema = joi.object({
 
 });
 
-const Joi = require('joi');
+
 
 const musicJoiSchema = Joi.object({
-    name: Joi.string().required(),
-    image: Joi.string().required(),
-    category: Joi.string().required(),
-    description: Joi.string().required(),
-    artist: Joi.string().required(),
-    song: Joi.string().required(),
+    name: joi.string().required(),
+    image: joi.string().required(),
+    category: joi.string().required(),
+    description: joi.string().required(),
+    artist: joi.string().required(),
+    song: joi.string().required(),
 });
 
 
 const playlistJoiSchema=joi.object({
     name:joi.string().required(),
-    description:joi.string().required()
+    description:joi.string().required(),
+    image:Joi.string().required()
 })
 
 
