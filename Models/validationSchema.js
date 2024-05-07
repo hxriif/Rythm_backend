@@ -11,7 +11,7 @@ const userjoiSchema = joi.object({
 
 
 
-const musicJoiSchema = Joi.object({
+const musicJoiSchema = joi.object({
     name: joi.string().required(),
     image: joi.string().required(),
     category: joi.string().required(),
