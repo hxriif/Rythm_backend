@@ -306,7 +306,7 @@ module.exports = {
             );
         }
 
-        const { name, description } = value;
+        const { name, description} = value;
         const newPlaylist = new Playlist({
             name,
             description,
@@ -395,7 +395,7 @@ module.exports = {
 
     addSongToPlaylist: async (req, res) => {
         const playlistId = req.params.playlistId;
-        const { songId } = req.body;
+        const { musicId } = req.body;
 
         const playlist = await Playlist.findById(playlistId);
         if (!playlist) {
@@ -405,7 +405,7 @@ module.exports = {
             });
         }
 
-        const song = await MusicCollections.findById(songId);
+        const song = await MusicCollections.findById(musicId);
         if (!song) {
             return res.status(404).json({
                 status: "error",
@@ -434,10 +434,21 @@ module.exports = {
                 message: "No playlists found for this user"
             });
         }
+
+        const songs = playlists.flatMap(playlist => 
+            playlist.songs.map(song => ({
+                _id: song._id,
+                name: song.name,
+                artist: song.artist,
+                image: song.image
+                
+            }))
+        );
+
         return res.status(200).json({
             status: "success",
             message: "fetched success",
-            data: playlists
+            data: [songs]
         })
     },
 
@@ -534,9 +545,6 @@ module.exports = {
             data: deletedMusic
         })
     },
-
-
-    
 
 }
 
