@@ -287,6 +287,7 @@ module.exports = {
 
     createPlaylist: async (req, res) => {
         const userId = req.params.id;
+        console.log(userId,'user');
         const user = await userschema.findById(userId)
         if (!user) {
             return res.status(404).json({
